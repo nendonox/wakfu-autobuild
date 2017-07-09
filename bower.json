@@ -1,0 +1,19 @@
+{
+  "name": "wakfu-autobuild",
+  "description": "wakfu automate builder",
+  "authors": [
+    "nendo"
+  ],
+  "license": "UNLICENSED",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.4"
+  }
+}

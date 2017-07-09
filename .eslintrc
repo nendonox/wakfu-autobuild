@@ -1,0 +1,11 @@
+{
+  "extends": "loopback",
+  "rules": {
+    "comma-dangle": 0,
+    "max-len": ["error", 140]
+  },
+  "globals": {
+    "angular": true,
+    "_": true
+  }
+}

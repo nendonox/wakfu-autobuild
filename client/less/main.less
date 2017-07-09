@@ -1,0 +1,122 @@
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+html {
+  background: #333;
+  color: #fcfcfc;
+}
+
+body {
+  margin: 0;
+  border: 7px solid #446;
+}
+
+input {
+  padding: 2px;
+  height: 16px;
+  border: none;
+  border-bottom: 1px solid #abcdef;
+  background: #444;
+  color: #fefefe;
+}
+
+input:focus {
+  outline: none;
+}
+
+html, input {
+  font-family: 'Migu 1M', monospace;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+a {
+  color: #f99;
+  border-bottom: 1px solid #f99;
+  cursor: pointer;
+}
+
+form {
+  margin: 0;
+}
+
+.title {
+}
+
+.button {
+  color: #99f;
+  border-bottom: 1px solid #99f;
+  padding: 0;
+  background: #333;
+  cursor: pointer;
+}
+
+.iterate(@i) when (@i = 0) { }
+.iterate(@i) when (@i > 0) {
+  .w@{i} {
+    width: @i*7;
+    max-width: @i*7;
+    min-width: @i*7;
+  }
+  .iterate(@i - 1);
+}
+
+.iterate(50);
+
+.row {
+  letter-spacing: -.40em;
+  height: 16px;
+  max-height: 16px;
+  min-height: 16px;
+  display: flex;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+}
+
+.row span, .row input, .row pre {
+  display: inline-block;;
+  letter-spacing: normal;
+}
+
+.flex-container {
+  display: flex;
+  > div {
+    width:100%;
+  }
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+  > div {
+    width: 100%;
+  }
+}
+
+.flex {
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+table {
+  font-size: 14px;
+  border-spacing: 0;
+  line-height: 14px;
+}
+
+th {
+  padding: 0 7px 0 0;
+  text-align: left;
+  font-weight: normal;
+  color: #abcdef;
+}
+
+td {
+  padding: 0 7px 0 0;
+}
