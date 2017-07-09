@@ -1,0 +1,31 @@
+html(ng-app="app")
+  head
+    meta(name="viewport", content="width=device-width, initial-scale=1")
+    title Wakfu Automate Builder
+    link(rel="shortcut icon", type="image/vnd.microsoft.icon", href="./res/favicon-wakfu-automate-builder.ico")
+    link(rel="stylesheet", href="./styles/main.css")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.0/angular-ui-router.js")
+    script(src="./scripts/main.js")
+  body.flex-container(ng-controller="IndexCtrl as ctrl")
+    .column
+      .row
+        a(ng-click="ctrl.handlers.goToLogin()")
+          span {{ 'label.uni8d' | translate }}
+        span.w1
+        span.w5 .-.-
+        span.flex {{ ctrl.message }}
+        span(ng-show="ctrl.cursorFlag") _
+        a(ng-click="ctrl.handlers.changeLanguage('ja')")
+          span Ja
+        span.w1
+        a(ng-click="ctrl.handlers.changeLanguage('en')")
+          span En
+      .row
+      .flex
+        div(ui-view='')
+      .row
+        span © 2017 clockhand.net /
+        span.w1
+        a(href="http://ipafont.ipa.go.jp/ipa_font_license_v1-html#jp", target="_blank")
+          span {{ 'label.ipaLicense' | translate }}

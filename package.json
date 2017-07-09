@@ -1,0 +1,19 @@
+{
+  "name": "wakfu-autobuild",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=4"
+  },
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-loopback": "^8.0.0",
+    "grunt-contrib-concat": "^1.0.1",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-contrib-jade": "^1.0.0",
+    "grunt-contrib-less": "^1.4.1",
+    "grunt-contrib-watch": "^1.0.0",
+    "grunt-eslint": "^19.0.0"
+  },
+  "license": "UNLICENSED",
+  "description": "wakfu automate builder"
+}
