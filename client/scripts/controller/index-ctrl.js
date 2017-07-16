@@ -2,28 +2,16 @@
 
 var app = angular.module('app');
 
-app.controller('IndexCtrl', function($http, AppConst) {
-  var self = this;
+app.controller('IndexCtrl', function($http, AppConst, Searcher) {
+  let self = this;
 
   (function() {
-    $http.get('./res/equipment.json').then(function(res) {
-      self.vars.equipments = res.data;
-    });
+    Searcher.loadEquipments();
   })();
 
-  this.privates = {
-    calcScore: function(equipment) {
-      return _.reduce(equipment.stats, function(sum, value, key) {
-        var score = parseInt(value) * self.vars.scores[key];
-        return score ? sum + score : sum;
-      }, 0);
-    }
-  };
-
   this.vars = {
-    equipments: {},
-    rankings: {},
-    scores: angular.copy(AppConst.statsScores)
+    scores: angular.copy(AppConst.statsScores),
+    result: {}
   };
 
   this.consts = {
@@ -38,14 +26,9 @@ app.controller('IndexCtrl', function($http, AppConst) {
 
   this.handlers = {
     build: function() {
-      self.vars.rankings = {};
-      _.each(self.consts.equipmentTypes, function(type) {
-        _.each(self.vars.equipments[type], function(equipment) {
-          equipment.score = self.privates.calcScore(equipment);
-        });
-        self.vars.rankings[type] = _.reverse(_.sortBy(self.vars.equipments[type], ['score']));
-      });
-      console.log(self.vars.rankings);
+      Searcher.setStatValues(self.vars.scores);
+      self.vars.result = Searcher.search();
+      console.log(self.vars.result);
     }
   };
 });

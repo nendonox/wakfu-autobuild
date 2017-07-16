@@ -24,17 +24,17 @@ app.constant('AppConst', {
     'Range': 120,
     'Control': 0,
     'Block': 4,
-    'Critical Hit': 10,
-    'Critical Mastery': 1,
-    'Rear Mastery': 1,
-    'Healing Mastery': 1,
-    'Area Mastery': 1,
-    'Single Target Mastery': 1,
-    'Melee Mastery': 1,
+    'Critical Hit': 13,
+    'Critical Mastery': 0.8,
+    'Rear Mastery': 0,
+    'Healing Mastery': 0,
+    'Area Mastery': 0.8,
+    'Single Target Mastery': 0,
+    'Melee Mastery': 0,
     'Distance Mastery': 1,
     'Berserk Mastery': 0,
     'Mastery to 3 random elements': 1,
-    'Mastery to 2 random elements': 1,
+    'Mastery to 2 random elements': 0.8,
     'Elemental Resistance': 4,
     'Resistance to 3 random elements': 3,
     'Resistance to 2 random elements': 2,
@@ -49,6 +49,6 @@ app.constant('AppConst', {
     'Lock': 0,
     'Initiative': 0,
     'Wisdom': 0,
-    'Prospecting': 0
+    'Prospecting': 10
   }
 });

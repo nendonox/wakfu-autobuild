@@ -11,7 +11,7 @@ html(ng-app="app")
       .flex
         div(ng-repeat="type in ctrl.consts.equipmentTypes")
           span {{ type }}
-          div(ng-repeat="equipment in ctrl.vars.rankings[type]")
+          div(ng-repeat="equipment in ctrl.vars.result.viableEquipments[type]")
             span {{ equipment.score }}: {{ equipment.name }}
           .row
         button(ng-click="ctrl.handlers.build()") Build!

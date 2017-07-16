@@ -14,6 +14,7 @@ def parseEquipments(html):
     trs = root.xpath('//tbody/tr')
     for tr in trs:
         name = tr.xpath('./td[2]/span[@class="ak-linker"]/a/text()')[0]
+        rarity = tr.xpath('./td[2]/span[contains(@class, "ak-icon-small")]/@title')[0]
         _type = tr.xpath('./td[3]/img/@title')[0]
         _stats = tr.xpath('./td[4]//div[@class="ak-title"]/text()')
         _stats = map(lambda x: x.strip(), _stats)
@@ -28,6 +29,7 @@ def parseEquipments(html):
             equipments[_type] = [];
         equipments[_type].append({
             'name': name,
+            'rarity': rarity,
             'type': _type,
             'stats': stats
         })
