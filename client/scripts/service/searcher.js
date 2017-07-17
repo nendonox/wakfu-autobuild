@@ -203,6 +203,7 @@ app.service('Searcher', function($http, AppConst) {
     setResistanceDeduction(query.resistanceDeduction);
 
     let viableEquipments = makeViableEquipments(query.viableMargin, query.blackList);
+    let maxLoopCount = parseInt(query.maxLoopCount);
     let equipmentSetGenerator = cartesian(
       viableEquipments['Helmet'],
       viableEquipments['Cloak'],
@@ -222,6 +223,9 @@ app.service('Searcher', function($http, AppConst) {
     const queueLength = 3;
     for (let equipmentSet of equipmentSetGenerator) {
       count += 1;
+      if (count > maxLoopCount) {
+        break;
+      }
       let result = evalEquipmentSet(equipmentSet);
       if (ranking.length < queueLength || result.score > scoreThreshold) {
         ranking.push({
