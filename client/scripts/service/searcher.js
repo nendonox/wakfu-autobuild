@@ -60,8 +60,9 @@ app.service('Searcher', function($http, AppConst) {
     return _.min([resistance.fire, resistance.air, resistance.earth, resistance.water]);
   };
 
-  let calcResistanceDeduction = function(baseResistance, modifiableResistances) {
+  let searchBestResistance = function(baseResistance, modifiableResistances) {
     let bestResistance = baseResistance;
+    let bestModifiableResistance = [];
     let minimumResistance = checkMinimumResistance(baseResistance);
     let modifiableResistanceGenerator = cartesian(modifiableResistances);
     for (let modifiableResistance of modifiableResistanceGenerator) {
@@ -72,12 +73,22 @@ app.service('Searcher', function($http, AppConst) {
         copiedResistance.air += resistance.air;
         copiedResistance.water += resistance.water;
       });
-      let minimumResistance2 = checkMinimumResistance(copiedResistance);
-      if (minimumResistance2 > minimumResistance) {
-        minimumResistance = minimumResistance2;
+      let _minimumResistance = checkMinimumResistance(copiedResistance);
+      if (_minimumResistance > minimumResistance) {
+        minimumResistance = _minimumResistance;
         bestResistance = copiedResistance;
+        bestModifiableResistance = modifiableResistance;
       }
     }
+    return {
+      bestResistance: bestResistance,
+      bestModifiableResistance: bestModifiableResistance,
+      minimumResistance: minimumResistance
+    };
+  };
+
+  let calcResistanceDeduction = function(bestResistance) {
+    let minimumResistance = checkMinimumResistance(bestResistance);
     return (bestResistance.fire +
       bestResistance.air +
       bestResistance.water +
@@ -132,9 +143,15 @@ app.service('Searcher', function($http, AppConst) {
       if (tripleResistance) { modifiableResistances.push(tripleResistance); }
     });
 
-    if (relic > 1 || epic > 1) { return 0; }
-    if (equipmentSet[7].name === equipmentSet[8].name || equipmentSet[7].score < equipmentSet[8].score) { return 0; }
-    return score - calcResistanceDeduction(resistance, modifiableResistances);
+    if (relic > 1 || epic > 1) { return {score: 0}; }
+    if (equipmentSet[7].name === equipmentSet[8].name || equipmentSet[7].score < equipmentSet[8].score) { return {score: 0}; }
+    let result = searchBestResistance(resistance, modifiableResistances);
+    return {
+      score: score - calcResistanceDeduction(result.bestResistance),
+      bestResistance: result.bestResistance,
+      bestModifiableResistance: result.bestModifiableResistance,
+      minimumResistance: result.minimumResistance
+    };
   };
 
   let makeScoredEquipments = function() {
@@ -205,9 +222,15 @@ app.service('Searcher', function($http, AppConst) {
     const queueLength = 3;
     for (let equipmentSet of equipmentSetGenerator) {
       count += 1;
-      let score = evalEquipmentSet(equipmentSet);
-      if (ranking.length < queueLength || score > scoreThreshold) {
-        ranking.push({score: score, set: equipmentSet});
+      let result = evalEquipmentSet(equipmentSet);
+      if (ranking.length < queueLength || result.score > scoreThreshold) {
+        ranking.push({
+          score: result.score,
+          set: equipmentSet,
+          bestResistance: result.bestResistance,
+          bestModifiableResistance: result.bestModifiableResistance,
+          minimumResistance: result.minimumResistance
+        });
         ranking = _.sortBy(ranking, ['score']);
         if (ranking.length > queueLength) {
           ranking.shift();

@@ -10,7 +10,7 @@ html(ng-app="app")
     .column(ng-show="ctrl.permissions.isReady()")
       h1 Wakfu Auto Build
       h2 Description
-      span Hello. This site is mainly for solving the highly complicated resistant puzzle. Currently it covers only 200 level equipment required. Also, because it does not cover all patterns, it is not always possible to get the best combination. Please be aware of that point.
+      span Hello. This site is mainly for solving the highly complicated resistance puzzle. Currently it covers only 200 level equipment required. Also, because it does not cover all patterns, it is not always possible to get the best combination. Please be aware of that point.
       h2 Evaluation Criteria
       table
         tr(ng-repeat="label in ctrl.consts.statLabels")
@@ -58,3 +58,17 @@ html(ng-app="app")
               td {{ equipment.score }}
               td
                 a(href="{{ 'https://www.wakfu.com' + equipment.url }}", target="_blank") {{ equipment.name }}
+          br
+          table
+            tr
+              td Total Resist
+              td F{{ result.bestResistance.fire }}
+              td E{{ result.bestResistance.earth }}
+              td A{{ result.bestResistance.air }}
+              td W{{ result.bestResistance.water }}
+            tr(ng-repeat="resistance in result.bestModifiableResistance")
+              td Mod {{ $index +1 }}
+              td F{{ resistance.fire }}
+              td E{{ resistance.earth }}
+              td A{{ resistance.air }}
+              td W{{ resistance.water }}
