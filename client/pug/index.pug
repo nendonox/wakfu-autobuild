@@ -52,7 +52,7 @@ html(ng-app="app")
                   a(href="{{ 'https://www.wakfu.com' + equipment.url }}", target="_blank") {{ equipment.name }}
         h2 Results
         div(ng-repeat="result in ctrl.vars.result.ranking")
-          h3 Tier {{ $index + 1 }} (score: {{ result.score }})
+          h3 Tier {{ $index + 1 }} (score: {{ result.score | number: 0 }})
           table
             tr(ng-repeat="equipment in result.set")
               td {{ equipment.score }}

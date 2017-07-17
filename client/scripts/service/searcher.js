@@ -13,6 +13,10 @@ app.service('Searcher', function($http, AppConst) {
     self.statValues = statValues;
   };
 
+  let setResistanceDeduction = function(resistanceDeduction) {
+    self.resistanceDeduction = resistanceDeduction;
+  };
+
   let makeResistance = function(fire, earth, air, water) {
     return {fire: fire, earth: earth, air: air, water: water};
   };
@@ -74,7 +78,11 @@ app.service('Searcher', function($http, AppConst) {
         bestResistance = copiedResistance;
       }
     }
-    return bestResistance.fire + bestResistance.air + bestResistance.water + bestResistance.earth - minimumResistance * 4;
+    return (bestResistance.fire +
+      bestResistance.air +
+      bestResistance.water +
+      bestResistance.earth -
+      minimumResistance * 4) * self.resistanceDeduction;
   };
 
   let evalEquipment = function(equipment) {
@@ -175,6 +183,7 @@ app.service('Searcher', function($http, AppConst) {
   let search = function(query) {
     setEquipments(query.equipments);
     setStatValues(query.statValues);
+    setResistanceDeduction(query.resistanceDeduction);
 
     let viableEquipments = makeViableEquipments(query.viableMargin, query.blackList);
     let equipmentSetGenerator = cartesian(
