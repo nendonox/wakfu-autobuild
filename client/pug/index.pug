@@ -36,7 +36,7 @@ html(ng-app="app")
           td By subtracting the lowest resistance from this point and subtracting from the total score.
       h2 Item Blacklist
       .row
-        textarea(ng-model="ctrl.vars.blackList", ng-list="\n", cols="45", rows="15")
+        textarea(ng-model="ctrl.vars.blackList", ng-list!="&#10;" ng-trim="false", cols="45", rows="15")
       h2 Execution
       .row
         button(ng-click="ctrl.handlers.build()") Search

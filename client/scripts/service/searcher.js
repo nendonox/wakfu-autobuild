@@ -156,7 +156,6 @@ app.service('Searcher', function($http, AppConst) {
       let legMax = 0;
       let equipments = [];
       _.each(equipmentRankings[type], function(equipment) {
-        console.log(type, legMax, equipment.name);
         if (_.includes(blackList, equipment.name)) {
           return true;
         }
