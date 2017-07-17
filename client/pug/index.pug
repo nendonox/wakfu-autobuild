@@ -66,6 +66,7 @@ html(ng-app="app")
               td E{{ result.bestResistance.earth }}
               td A{{ result.bestResistance.air }}
               td W{{ result.bestResistance.water }}
+              td (Min{{ result.minimumResistance }})
             tr(ng-repeat="resistance in result.bestModifiableResistance")
               td Mod {{ $index +1 }}
               td F{{ resistance.fire }}
