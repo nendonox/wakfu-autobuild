@@ -54,5 +54,5 @@ Done.
 $ ls dest/build/
 index.html  res  scripts  styles
 ```
-## 4. publish the build file to a web server (like httpd).
+## 4. publish the build files to a web server (like httpd).
 it will work ... :3
