@@ -6,14 +6,55 @@ html(ng-app="app")
     link(rel="stylesheet", href="./styles/main.css")
     script(src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.4/angular.js")
     script(src="./scripts/main.js")
-  body.flex-container(ng-controller="IndexCtrl as ctrl")
-    .column
-      .flex
-        div(ng-repeat="type in ctrl.consts.equipmentTypes")
-          span {{ type }}
-          div(ng-repeat="equipment in ctrl.vars.result.viableEquipments[type]")
-            span {{ equipment.score }}: {{ equipment.name }}
-          .row
-        button(ng-click="ctrl.handlers.build()") Build!
+  body.main-container(ng-controller="IndexCtrl as ctrl")
+    .column(ng-show="ctrl.permissions.isReady()")
+      h1 Wakfu Auto Build
+      h2 Description
+      span Hello. This site is mainly for solving the highly complicated resistant puzzle. Currently it covers only 200 level equipment required. Also, because it does not cover all patterns, it is not always possible to get the best combination. Please be aware of that point.
+      h2 Evaluation Criteria
+      table
+        tr(ng-repeat="label in ctrl.consts.statLabels")
+          td {{ label }}
+          td
+            input(ng-model="ctrl.vars.statValues[label]")
+      h2 Search Settings
+      table
+        tr
+          td VIABLE_MARGIN
+          td
+            input(ng-model="ctrl.vars.viableMargin")
+          td We will make candidates from equipments with the highest points to equipments lower by this point.
+        tr
+          td MAX_LOOP_COUNT
+          td
+            input(ng-model="ctrl.vars.maxLoopCount")
+          td Number of times to try combining equipment. Too much will cause the PC to freeze, so the upper limit is 1000000.
+        tr
+          td RESISTANCE_DEDUCTION
+          td
+            input(ng-model="ctrl.vars.resistanceDeduction")
+          td By subtracting the lowest resistance from this point and subtracting from the total score.
+      h2 Item Blacklist
       .row
-        span Copyrights 2017 clockhand.net
+        textarea(ng-model="ctrl.vars.blackList", ng-list="\n", cols="45", rows="15")
+      h2 Execution
+      .row
+        button(ng-click="ctrl.handlers.build()") Search
+      .column(ng-show="ctrl.permissions.isResult()")
+        h2 Viable Equipments
+        .row.wrap
+          div(ng-repeat="type in ctrl.consts.equipmentTypes", style="width: 24.9%;")
+            h3 {{ type }}
+            table
+              tr(ng-repeat="equipment in ctrl.vars.result.viableEquipments[type]")
+                td {{ equipment.score }}
+                td
+                  a(href="{{ 'https://www.wakfu.com' + equipment.url }}", target="_blank") {{ equipment.name }}
+        h2 Results
+        div(ng-repeat="result in ctrl.vars.result.ranking")
+          h3 Tier {{ $index + 1 }} (score: {{ result.score }})
+          table
+            tr(ng-repeat="equipment in result.set")
+              td {{ equipment.score }}
+              td
+                a(href="{{ 'https://www.wakfu.com' + equipment.url }}", target="_blank") {{ equipment.name }}

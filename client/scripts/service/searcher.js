@@ -5,10 +5,8 @@ var app = angular.module('app');
 app.service('Searcher', function($http, AppConst) {
   let self = this;
 
-  let loadEquipments = function() {
-    $http.get('./res/equipment.json').then(function(response) {
-      self.equipments = response.data;
-    });
+  let setEquipments = function(equipments) {
+    self.equipments = equipments;
   };
 
   let setStatValues = function(statValues) {
@@ -150,12 +148,12 @@ app.service('Searcher', function($http, AppConst) {
     return rankings;
   };
 
-  let makeViableEquipments = function() {
+  let makeViableEquipments = function(_viableMargin) {
+    let viableMargin = parseInt(_viableMargin);
     let equipmentRankings = makeEquipmentRankings();
     let viableEquipments = {};
     _.each(AppConst.equipmentTypes, function(type) {
       let legMax = 0;
-      let viableMargin = 20;
       let equipments = [];
       _.each(equipmentRankings[type], function(equipment) {
         if (legMax === 0 && equipment.rarity === 'Legendary') {
@@ -171,8 +169,11 @@ app.service('Searcher', function($http, AppConst) {
     return viableEquipments;
   };
 
-  let search = function() {
-    let viableEquipments = makeViableEquipments();
+  let search = function(query) {
+    setEquipments(query.equipments);
+    setStatValues(query.statValues);
+
+    let viableEquipments = makeViableEquipments(query.viableMargin);
     let equipmentSetGenerator = cartesian(
       viableEquipments['Helmet'],
       viableEquipments['Cloak'],
@@ -189,13 +190,14 @@ app.service('Searcher', function($http, AppConst) {
     let ranking = [];
     let scoreThreshold = 0;
     let count = 0;
+    const queueLength = 3;
     for (let equipmentSet of equipmentSetGenerator) {
       count += 1;
       let score = evalEquipmentSet(equipmentSet);
-      if (ranking.length < 20 || score > scoreThreshold) {
+      if (ranking.length < queueLength || score > scoreThreshold) {
         ranking.push({score: score, set: equipmentSet});
         ranking = _.sortBy(ranking, ['score']);
-        if (ranking.length > 20) {
+        if (ranking.length > queueLength) {
           ranking.shift();
         }
         scoreThreshold = ranking[0].score;
@@ -203,14 +205,12 @@ app.service('Searcher', function($http, AppConst) {
     }
     return {
       viableEquipments: viableEquipments,
-      ranking: ranking,
+      ranking: _.reverse(ranking),
       count: count
     };
   };
 
   return {
-    loadEquipments: loadEquipments,
-    setStatValues: setStatValues,
     search: search
   };
 });

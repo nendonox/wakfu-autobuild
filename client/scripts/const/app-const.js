@@ -3,6 +3,24 @@
 var app = angular.module('app');
 
 app.constant('AppConst', {
+  viableMargin: 0,
+  maxLoopCount: 1000000,
+  resistanceDeduction: 1,
+  blackList: [
+    'Dragon Helm',
+    'Iridescent Necklace',
+    'Dragon Amulet',
+    'Dragon Epaulettes',
+    'Coat of Chain Scales',
+    'Prismatic Ring',
+    'Dragon Seal',
+    'Dragon Shin Guards',
+    'Dragon Slicer',
+    'Prismatic Bow',
+    'Mage Cape',
+    'Prismatic Buckle',
+    'Dragon Armor'
+  ],
   equipmentTypes: [
     'Helmet',
     'Cloak',
@@ -16,7 +34,7 @@ app.constant('AppConst', {
     'Two-Handed Weapons',
     'Second Hand'
   ],
-  statsScores: {
+  statValues: {
     'Health Points': 0.3,
     'AP': 280,
     'MP': 180,
@@ -35,6 +53,10 @@ app.constant('AppConst', {
     'Berserk Mastery': 0,
     'Mastery to 3 random elements': 1,
     'Mastery to 2 random elements': 0.8,
+    'Mastery Fire': 0.25,
+    'Mastery Earth': 0.25,
+    'Mastery Air': 0.25,
+    'Mastery Water': 0.25,
     'Elemental Resistance': 4,
     'Resistance to 3 random elements': 3,
     'Resistance to 2 random elements': 2,
@@ -50,5 +72,44 @@ app.constant('AppConst', {
     'Initiative': 0,
     'Wisdom': 0,
     'Prospecting': 10
-  }
+  },
+  statLabels: [
+    'Health Points',
+    'AP',
+    'MP',
+    'WP',
+    'Range',
+    'Control',
+    'Block',
+    'Critical Hit',
+    'Critical Mastery',
+    'Rear Mastery',
+    'Healing Mastery',
+    'Area Mastery',
+    'Single Target Mastery',
+    'Melee Mastery',
+    'Distance Mastery',
+    'Berserk Mastery',
+    'Mastery to 3 random elements',
+    'Mastery to 2 random elements',
+    'Mastery Fire',
+    'Mastery Earth',
+    'Mastery Air',
+    'Mastery Water',
+    'Elemental Resistance',
+    'Resistance to 3 random elements',
+    'Resistance to 2 random elements',
+    'Resistance to 1 random elements',
+    'Resistance Fire',
+    'Resistance Earth',
+    'Resistance Air',
+    'Resistance Water',
+    'Critical Resistance',
+    'Rear Resistance',
+    'Dodge',
+    'Lock',
+    'Initiative',
+    'Wisdom',
+    'Prospecting'
+  ]
 });
