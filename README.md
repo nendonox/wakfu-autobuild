@@ -31,6 +31,8 @@ $ head -10 ./dest/data/equipment.json
 ```
 ## 3. build client source files
 ```
+$ npm install
+$ bower install
 $ grunt build
 Running "eslint:target" (eslint) task
 
