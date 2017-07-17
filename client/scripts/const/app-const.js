@@ -3,7 +3,7 @@
 var app = angular.module('app');
 
 app.constant('AppConst', {
-  viableMargin: 0,
+  viableMargin: 10,
   maxLoopCount: 1000000,
   resistanceDeduction: 1,
   blackList: [
@@ -19,7 +19,8 @@ app.constant('AppConst', {
     'Prismatic Bow',
     'Mage Cape',
     'Prismatic Buckle',
-    'Dragon Armor'
+    'Dragon Armor',
+    'Dragon Coat'
   ],
   equipmentTypes: [
     'Helmet',

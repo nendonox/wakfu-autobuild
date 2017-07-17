@@ -42,6 +42,7 @@ app.controller('IndexCtrl', function($http, AppConst, Searcher) {
         statValues: self.vars.statValues,
         viableMargin: self.vars.viableMargin,
         maxLoopCount: self.vars.maxLoopCount,
+        blackList: self.vars.blackList,
         resistanceDeduction: self.vars.resistanceDeduction
       });
       console.log(self.vars.result);

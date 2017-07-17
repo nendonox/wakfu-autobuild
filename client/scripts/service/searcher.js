@@ -125,7 +125,7 @@ app.service('Searcher', function($http, AppConst) {
     });
 
     if (relic > 1 || epic > 1) { return 0; }
-    if (equipmentSet[7].name === equipmentSet[8].name) { return 0; }
+    if (equipmentSet[7].name === equipmentSet[8].name || equipmentSet[7].score < equipmentSet[8].score) { return 0; }
     return score - calcResistanceDeduction(resistance, modifiableResistances);
   };
 
@@ -148,7 +148,7 @@ app.service('Searcher', function($http, AppConst) {
     return rankings;
   };
 
-  let makeViableEquipments = function(_viableMargin) {
+  let makeViableEquipments = function(_viableMargin, blackList) {
     let viableMargin = parseInt(_viableMargin);
     let equipmentRankings = makeEquipmentRankings();
     let viableEquipments = {};
@@ -156,6 +156,10 @@ app.service('Searcher', function($http, AppConst) {
       let legMax = 0;
       let equipments = [];
       _.each(equipmentRankings[type], function(equipment) {
+        console.log(type, legMax, equipment.name);
+        if (_.includes(blackList, equipment.name)) {
+          return true;
+        }
         if (legMax === 0 && equipment.rarity === 'Legendary') {
           legMax = equipment.score;
         }
@@ -173,7 +177,7 @@ app.service('Searcher', function($http, AppConst) {
     setEquipments(query.equipments);
     setStatValues(query.statValues);
 
-    let viableEquipments = makeViableEquipments(query.viableMargin);
+    let viableEquipments = makeViableEquipments(query.viableMargin, query.blackList);
     let equipmentSetGenerator = cartesian(
       viableEquipments['Helmet'],
       viableEquipments['Cloak'],
