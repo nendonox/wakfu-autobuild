@@ -2,10 +2,12 @@
   "extends": "loopback",
   "rules": {
     "comma-dangle": 0,
-    "max-len": ["error", 140]
+    "max-len": ["error", 140],
+    "brace-style": [2, "1tbs", {"allowSingleLine": true}]
   },
   "globals": {
     "angular": true,
-    "_": true
+    "_": true,
+    "cartesian": true
   }
 }
