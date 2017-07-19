@@ -6,8 +6,10 @@
     "brace-style": [2, "1tbs", {"allowSingleLine": true}]
   },
   "globals": {
-    "angular": true,
     "_": true,
-    "cartesian": true
+    "angular": true,
+    "cartesian": true,
+    "document": true,
+    "Worker": true
   }
 }

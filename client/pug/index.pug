@@ -43,7 +43,8 @@ html(ng-app="app")
       span Perform a search. Your browser may settle until the search is complete. Execution is completed normally within 30 seconds.
       br
       .row
-        button(ng-click="ctrl.handlers.build()") Search
+        button(id="search", ng-click="ctrl.handlers.build()") Search
+        span(ng-show="ctrl.vars.getCandidatesNumber()", style="margin: 4px 8px;") (Searching ... {{ ctrl.vars.getSearchedNumber() }} / {{ ctrl.vars.getCandidatesNumber() }})
       .column(ng-show="ctrl.permissions.isResult()")
         h2 Viable Equipments
         span Equipment considered useful when searching is displayed below.
@@ -51,13 +52,13 @@ html(ng-app="app")
           div(ng-repeat="type in ctrl.consts.equipmentTypes", style="width: 24.9%;")
             h3 {{ type }}
             table
-              tr(ng-repeat="equipment in ctrl.vars.result.viableEquipments[type]")
+              tr(ng-repeat="equipment in ctrl.vars.getResult().viableEquipments[type]")
                 td {{ equipment.score }}
                 td
                   a(href="{{ 'https://www.wakfu.com' + equipment.url }}", target="_blank") {{ equipment.name }}
         h2 Results
         span Search results. If there is a problem with the result, adjust the parameters.
-        div(ng-repeat="result in ctrl.vars.result.ranking")
+        div(ng-repeat="result in ctrl.vars.getResult().ranking")
           h3 Tier {{ $index + 1 }} (score: {{ result.score | number: 0 }})
           table
             tr(ng-repeat="equipment in result.set")

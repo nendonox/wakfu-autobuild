@@ -12,13 +12,16 @@ app.controller('IndexCtrl', function($http, AppConst, Searcher) {
   })();
 
   this.vars = {
-    equipments: {},
     statValues: angular.copy(AppConst.statValues),
     viableMargin: AppConst.viableMargin,
     maxLoopCount: AppConst.maxLoopCount,
     resistanceDeduction: AppConst.resistanceDeduction,
     blackList: AppConst.blackList,
-    result: {}
+    equipments: {},
+    result: {},
+    getCandidatesNumber: () => { return Searcher.getCandidatesNumber(); },
+    getSearchedNumber: () => { return Searcher.getSearchedNumber(); },
+    getResult: () => { return Searcher.getResult(); }
   };
 
   this.consts = {
@@ -31,21 +34,21 @@ app.controller('IndexCtrl', function($http, AppConst, Searcher) {
       return !_.isEmpty(self.vars.equipments);
     },
     isResult: function() {
-      return !_.isEmpty(self.vars.result);
+      return !_.isEmpty(self.vars.getResult());
     }
   };
 
   this.handlers = {
     build: function() {
-      self.vars.result = Searcher.search({
+      Searcher.search({
         equipments: self.vars.equipments,
+        equipmentTypes: AppConst.equipmentTypes,
         statValues: self.vars.statValues,
         viableMargin: self.vars.viableMargin,
         maxLoopCount: self.vars.maxLoopCount,
         blackList: self.vars.blackList,
         resistanceDeduction: self.vars.resistanceDeduction
       });
-      console.log(self.vars.result);
     }
   };
 });
