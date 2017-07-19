@@ -11,6 +11,12 @@ module.exports = function(grunt) {
         src: ['bower_components/lodash/dist/lodash.js',
           'client/scripts/main.js', 'client/scripts/**/*.js'],
         dest: 'dest/build/scripts/main.js'
+      },
+      workers: {
+        src: ['bower_components/lodash/dist/lodash.js',
+          'client/scripts/lib/cartesian-gen.js',
+          'client/workers/searcher.js'],
+        dest: 'dest/build/workers/searcher.js'
       }
     },
     jade: {
