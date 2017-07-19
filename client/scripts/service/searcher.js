@@ -6,7 +6,7 @@ app.service('Searcher', function($rootScope, $timeout, $window) {
   let self = this;
 
   self.stack = 0;
-  self.searcher = new Worker('../workers/searcher.js');
+  self.searcher = new Worker('./workers/searcher.js');
   self.searcher.addEventListener('message', function(message) {
     let action = message.data[0];
     let value = message.data[1];
