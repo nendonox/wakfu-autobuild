@@ -11,23 +11,39 @@
 }
 
 html {
-  background: #333;
-  color: #fcfcfc;
+  background: #F5F5F5;
+  color: black;
+  display: flex;
+  justify-content: center;
 }
 
 body {
+  background: #FAFAFA;
   margin: 0;
-  border: 7px solid #446;
+  width: 1240px;
 }
 
-input {
-  padding: 2px;
-  height: 16px;
-  border: none;
-  border-bottom: 1px solid #abcdef;
-  background: #444;
-  color: #fefefe;
+h1 {
+  background: #0097A7;
+  color: white;
+  padding: 16px;
+  margin: 0 0 16px 0;
+  box-shadow: 0 1px 1px #CCC;
 }
+
+h2 {
+  color: #006064;
+  padding: 16px;
+  margin: 0;
+}
+
+h3 {
+  color: black;
+  padding: 16px;
+  margin: 0 0 4px 0;
+}
+
+
 
 input:focus {
   outline: none;
@@ -50,7 +66,7 @@ html, input {
 }
 
 a {
-  color: #f99;
+  color: #111;
   cursor: pointer;
 }
 
@@ -96,14 +112,6 @@ form {
   letter-spacing: normal;
 }
 
-.main-container {
-  display: flex;
-  justify-content: center;
-  > div {
-    width: 1120px;
-  }
-}
-
 .column {
   display: flex;
   flex-direction: column;
@@ -118,23 +126,209 @@ form {
   flex: 1 1 auto;
 }
 
-table {
-  font-size: 14px;
-  border-spacing: 0;
-  line-height: 14px;
+.width-input {
+  width: 200px;
 }
 
-tr {
-  height: 16px;
+.widget {
+  padding: 8px;
+  background: #FFF;
+  margin: 0 8px 8px 0;
+  border-radius: 4px;
+  box-shadow: 0 1px 1px #CCC;
+  height: 40px;
+  display: flex;
+  align-items: center;
 }
 
-th {
-  padding: 0 7px 0 0;
+.label {
+  background: #9575CD;
+  padding: 4px 8px;
+  color: #fff;
+  border-radius: 4px;
+  margin-right: 8px;
+}
+
+.rarity-relic {
+  color: #AA00FF;
+}
+
+.rarity-epic {
+  color: #f170a6;
+}
+
+.rarity-pvp {
+  color: #6fc2dc;
+}
+
+.rarity-legendary {
+  color: #ffcc00;
+}
+
+.rarity-mythical {
+  color: #ff7b00;
+}
+
+.equipment-select-row-name {
+  width: 24%;
+}
+
+.equipment-select-row-level {
+  width: 8%;
+}
+
+.equipment-select-row-rarity {
+  width: 12%;
+}
+
+.equipment-select-row-type {
+  width: 16%;
+}
+
+.equipment-select-row-stats {
+  width: 28%;
+}
+
+.equipment-select-row-use {
+  width: 8%;
+  text-align: right;
+}
+
+.equipment-select {
+  margin: 0 16px 16px;
+}
+
+.equipment-select-table {
+  border-top: 1px solid #ccc;
+  box-shadow: 0 1px 1px #CCC;
+}
+
+.equipment-select-header {
+  color: #006064;
   text-align: left;
-  font-weight: normal;
-  color: #abcdef;
+  padding: 0 8px;
+  border-bottom: 1px solid #ccc;
+  background: #F5F5F5;
+  height: 40px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
 }
 
-td {
-  padding: 0 7px 0 0;
+.equipment-select-data {
+  background: #fff;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.equipment-select-data-wrapper {
+  height: 500px;
+  overflow-y: auto;
+}
+
+.table {
+  border-top: 1px solid #ccc;
+  box-shadow: 0 1px 1px #CCC;
+}
+
+.table-header {
+  color: #006064;
+  text-align: left;
+  padding: 0 8px;
+  border-bottom: 1px solid #ccc;
+  background: #F5F5F5;
+  height: 40px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+}
+
+.table-data {
+  background: #fff;
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.table-settings-scores-stat {
+  width: 70%;
+}
+
+.table-settings-scores-score {
+  width: 30%;
+}
+
+.table-settings-target-target {
+  width: 40%;
+}
+
+.table-settings-target-value {
+  width: 20%;
+}
+
+.table-settings-target-slider {
+  width: 40%;
+}
+
+.table-settings-options-option {
+  width: 70%;
+}
+
+.table-settings-options-value {
+  width: 30%;
+}
+
+.total-stats {
+  background: white;
+  box-shadow: 0 1px 1px #CCC;
+  .stats {
+    display: flex;
+    align-items: center;
+    height: 18px;
+    padding: 0 8px;
+  }
+}
+
+.total-stats-header {
+  display: flex;
+  padding: 0 8px;
+  align-items: center;
+  background: #F5F5F5;
+  color: #006064;
+  font-weight: bold;
+  height: 32px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.results-row-name {
+  width: 32%;
+}
+
+.results-row-level {
+  width: 8%;
+}
+
+.results-row-type {
+  width: 16%;
+}
+
+.results-row-stats {
+  width: 36%;
+}
+
+.results-row-score {
+  width: 8%;
+}
+
+.help {
+  margin: 0 4px;
+  color: purple;
+  border-bottom: 1px solid purple;
+  cursor: pointer;
 }

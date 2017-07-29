@@ -1,0 +1,40 @@
+div
+  .table(style="width: 400px; margin-right: 8px;")
+    .row.table-header
+      span.table-settings-options-option Solver Options
+        span.help(title="装備セットを検索する際に用いられる設定値を投入できます。（よくわかってる人向け。）") ?
+    .row.table-data
+      span.table-settings-options-option RESISTANCE_DEDUCTION
+        span.help(title="耐性バランスをどれだけ重視するかを定義するパラメータです。") ?
+      span.table-settings-options-value
+        input(ng-model="ctrl.vars.resistanceDeduction", style="width: 100px;")
+    .row.table-data
+      span.table-settings-options-option VIABLE_MARGIN
+        span.help(title="有用と思われる装備を抜き出す際に用いる閾値です。大きいほど多数の装備を候補としますが、その分組み合わせ数が膨大となり時間がかかります。") ?
+      span.table-settings-options-value
+        input(ng-model="ctrl.vars.viableMargin", style="width: 100px;")
+    .row.table-data
+      span.table-settings-options-option ANNEALING_VIABLE_MARGIN
+        span.help(title="有用と思われる装備を抜き出す際に用いる閾値です。焼きなまし法は全探索より広い探索空間を与えても、常識的な時間でまともな解を得られます。") ?
+      span.table-settings-options-value
+        input(ng-model="ctrl.vars.annealingViableMargin", style="width: 100px;")
+    .row.table-data
+      span.table-settings-options-option ANNEALING_MAX_ITERATION
+        span.help(title="焼きなまし法の探索回数です。") ?
+      span.table-settings-options-value
+        input(ng-model="ctrl.vars.annealingMaxIteration", style="width: 100px;")
+    .row.table-data
+      span.table-settings-options-option ANNEALING_COOLING_ALPHA
+        span.help(title="焼きなまし法の温度パラメータです。") ?
+      span.table-settings-options-value
+        input(ng-model="ctrl.vars.annealingCoolingAlpha", style="width: 100px;")
+    .row.table-data
+      span.table-settings-options-option RELIC_BONUS
+        span.help(title="レリックとレジェンダリー装備を比較するための補正値です。") ?
+      span.table-settings-options-value
+        input(ng-model="ctrl.vars.relicBonus", style="width: 100px;")
+    .row.table-data
+      span.table-settings-options-option EPIC_BONUS
+        span.help(title="エピックとレジェンダリー装備を比較するための補正値です。") ?
+      span.table-settings-options-value
+        input(ng-model="ctrl.vars.epicBonus", style="width: 100px;")

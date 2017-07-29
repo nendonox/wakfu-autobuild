@@ -1,0 +1,11 @@
+h2 Solver Settings
+div(style="margin: 0 16px 16px;")
+  span 探索を実施する際に参照する各種パラメータを設定できます。
+div(style="margin: 0 0 8px 16px;")
+  span(style="margin-right: 8px;") Preset:
+  select(ng-model="ctrl.vars.preset", ng-change="ctrl.handlers.changePreset()")
+    option(ng-repeat="preset in ctrl.consts.presets", ng-value="preset") {{ preset.name }}
+.row.wrap(style="margin: 0 16px 16px;")
+  include solver-settings/settings-scores.pug
+  include solver-settings/settings-target-stats.pug
+  include solver-settings/settings-solver-options.pug

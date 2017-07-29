@@ -1,0 +1,15 @@
+h2 Search Execution
+div(style="margin: 0 16px 16px;")
+  span 上記の設定値をもとに探索を開始します。
+  ul
+    li Full Search: 全探索を実行します。計算さえ終われば、与えられた候補内の組み合わせにおいて最適解を得られます。
+    li Simulated Annealing: 焼きなまし法で探索し、一定の計算回数内で近似解を得ます。全探索よりも広い解空間を相手にできるため、何度か実行するうちに良い解を拾ってくるかもしれません。
+    li Cancel: 時間が掛かりすぎるようであれば中断してください。
+div(style="margin: 0 16px 16px;")
+  button(ng-click="ctrl.handlers.build('FULL')") Full Search
+  button(ng-click="ctrl.handlers.build('SA')") Simulated Annealing
+  button(ng-click="ctrl.handlers.cancel()") Cancel
+  span(ng-show="ctrl.vars.getCandidatesNumber()", style="margin: 4px 8px;")
+    span (Searching ... {{ ctrl.vars.getSearchInfo().count }} / {{ ctrl.vars.getCandidatesNumber() }},
+    span  score={{ ctrl.vars.getSearchInfo().score | number: 0 }}/{{ ctrl.vars.getSearchInfo().maxScore | number: 0 }},
+    span  t={{ ctrl.vars.getSearchInfo().t | number:4 }})

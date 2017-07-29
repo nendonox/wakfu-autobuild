@@ -9,7 +9,7 @@ function* cartesian() {
   let arrays = arguments;
   if (arrays.length === 1) { arrays = arrays[0]; }
   function* doCartesian(i, prod) {
-    if (i == arrays.length) {
+    if (i === arrays.length) {
       yield prod;
     } else {
       for (let j = 0; j < arrays[i].length; j++) {

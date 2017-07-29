@@ -8,6 +8,7 @@
   "globals": {
     "_": true,
     "angular": true,
+    "app": true,
     "cartesian": true,
     "document": true,
     "Worker": true

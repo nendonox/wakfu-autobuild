@@ -1,0 +1,55 @@
+div
+  .table(style="width: 380px; margin-right: 8px;")
+    .row.table-header
+      span.table-settings-target-target Solver Targets
+        span.help(title="制約条件を設定します。制約を満たさない装備セットは無視されます。") ?
+    .row.table-data
+      span.table-settings-target-target Min AP
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.minAp }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.minAp", min="0", max="13")
+    .row.table-data
+      span.table-settings-target-target Max AP
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.maxAp }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.maxAp", min="0", max="13")
+    .row.table-data
+      span.table-settings-target-target Min MP
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.minMp }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.minMp", min="0", max="7")
+    .row.table-data
+      span.table-settings-target-target Max MP
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.maxMp }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.maxMp", min="0", max="7")
+    .row.table-data
+      span.table-settings-target-target Min Range
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.minRange }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.minRange", min="0", max="10")
+    .row.table-data
+      span.table-settings-target-target Max Range
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.maxRange }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.maxRange", min="0", max="10")
+    .row.table-data
+      span.table-settings-target-target Min WP
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.minWp }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.minWp", min="0", max="15")
+    .row.table-data
+      span.table-settings-target-target Max WP
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.maxWp }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.maxWp", min="0", max="15")
+    .row.table-data
+      span.table-settings-target-target Min Block
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.minBlock }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.minBlock", min="0", max="100")
+    .row.table-data
+      span.table-settings-target-target Max Block
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.maxBlock }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.maxBlock", min="0", max="100")
