@@ -16,6 +16,10 @@ let setResistanceDeduction = function(resistanceDeduction) {
   vars.resistanceDeduction = resistanceDeduction;
 };
 
+let setSearchTarget = function(searchTarget) {
+  vars.searchTarget = searchTarget;
+};
+
 let makeResistance = function(fire, earth, air, water) {
   return {fire: fire, earth: earth, air: air, water: water};
 };
@@ -106,6 +110,7 @@ let evalEquipmentSet = function(equipmentSet) {
   let score = 0;
   let relic = 0;
   let epic = 0;
+  let ap = 7, mp = 4, wp = 6, range = 0, block = 0;
   let resistance = makeResistance(0, 0, 0, 0);
   let modifiableResistances = [];
 
@@ -120,7 +125,14 @@ let evalEquipmentSet = function(equipmentSet) {
 
     // レリック or エピックスコア
     if (equipment.rarity === 'Relic') relic += 1;
-    else if (equipment.rarity === '') epic += 1;
+    else if (equipment.rarity === 'Epic') epic += 1;
+
+    // AP, MP, WP, Range
+    ap += equipment.stats['AP'] ? parseInt(equipment.stats['AP']) : 0;
+    mp += equipment.stats['MP'] ? parseInt(equipment.stats['MP']) : 0;
+    wp += equipment.stats['WP'] ? parseInt(equipment.stats['WP']) : 0;
+    range += equipment.stats['Range'] ? parseInt(equipment.stats['Range']) : 0;
+    block += equipment.stats['Block'] ? parseInt(equipment.stats['Block']) : 0;
 
     // 耐性（固定）
     let resistanceFire = parseInt(equipment.stats['Resistance Fire']) || 0;
@@ -142,8 +154,13 @@ let evalEquipmentSet = function(equipmentSet) {
     if (tripleResistance) { modifiableResistances.push(tripleResistance); }
   });
 
-  if (relic > 1 || epic > 1) { return {score: 0}; }
-  if (equipmentSet[7].name === equipmentSet[8].name || equipmentSet[7].score < equipmentSet[8].score) { return {score: 0}; }
+  if (relic > 1 || epic > 1) { return { score: 0 }; }
+  if ((equipmentSet[7].name === equipmentSet[8].name && equipmentSet[7].rarity === equipmentSet[8].rarity) || equipmentSet[7].score < equipmentSet[8].score) { return { score: 0 }; }
+  if (ap < vars.searchTarget.minAp || vars.searchTarget.maxAp < ap) { return { score: 0 }; }
+  if (mp < vars.searchTarget.minMp || vars.searchTarget.maxMp < mp) { return { score: 0 }; }
+  if (wp < vars.searchTarget.minWp || vars.searchTarget.maxWp < wp) { return { score: 0 }; }
+  if (range < vars.searchTarget.minRange || vars.searchTarget.maxRange < range) { return { score: 0 }; }
+  if (block < vars.searchTarget.minBlock || vars.searchTarget.maxBlock < block) { return { score: 0 }; }
   let result = searchBestResistance(resistance, modifiableResistances);
   return {
     score: score - calcResistanceDeduction(result.bestResistance),
@@ -153,18 +170,23 @@ let evalEquipmentSet = function(equipmentSet) {
   };
 };
 
-let makeScoredEquipments = function() {
+let makeScoredEquipments = function(relicBonus, epicBonus) {
   let equipments = _.cloneDeep(vars.equipments);
   _.each(vars.equipmentTypes, function(type) {
     _.each(equipments[type], function(equipment) {
       equipment.score = evalEquipment(equipment);
+      if (equipment.rarity === 'Relic') {
+        equipment.score -= parseInt(relicBonus);
+      } else if (equipment.rarity === 'Epic') {
+        equipment.score -= parseInt(epicBonus);
+      }
     });
   });
   return equipments;
 };
 
-let makeEquipmentRankings = function() {
-  let scoredEquipments = makeScoredEquipments();
+let makeEquipmentRankings = function(relicBonus, epicBonus) {
+  let scoredEquipments = makeScoredEquipments(relicBonus, epicBonus);
   let rankings = {};
   _.each(vars.equipmentTypes, function(type) {
     rankings[type] = _.reverse(_.sortBy(scoredEquipments[type], ['score']));
@@ -172,25 +194,55 @@ let makeEquipmentRankings = function() {
   return rankings;
 };
 
-let makeViableEquipments = function(_viableMargin, blackList) {
+let makeViableEquipments = function(_viableMargin, relicBonus, epicBonus) {
   let viableMargin = parseInt(_viableMargin);
-  let equipmentRankings = makeEquipmentRankings();
+  let equipmentRankings = makeEquipmentRankings(relicBonus, epicBonus);
   let viableEquipments = {};
   _.each(vars.equipmentTypes, function(type) {
     let legMax = 0;
+    let legSecond = 0;
     let equipments = [];
     _.each(equipmentRankings[type], function(equipment) {
-      if (_.includes(blackList, equipment.name)) {
+      if (!equipment.enabled) {
         return true;
       }
-      if (legMax === 0 && equipment.rarity === 'Legendary') {
+      if (legMax !== 0 && legSecond === 0 && (equipment.rarity === 'Legendary' || equipment.rarity === 'PvP' || equipment.rarity === 'Mythical')) {
+        legSecond = equipment.score;
+      }
+      if (legMax === 0 && (equipment.rarity === 'Legendary' || equipment.rarity === 'PvP' || equipment.rarity === 'Mythical')) {
         legMax = equipment.score;
       }
-      if (legMax !== 0 && equipment.score < legMax - viableMargin) {
-        return false;
+      if (type === 'Ring') {
+        if (legSecond !== 0 && equipment.score < legSecond - viableMargin) {
+          return false;
+        }
+      } else {
+        if (legMax !== 0 && equipment.score < legMax - viableMargin) {
+          return false;
+        }
       }
       equipments.push(equipment);
     });
+    if (_.isEmpty(equipments)) {
+      equipments.push({
+        enabled: true,
+        level: '-',
+        name: 'Empty',
+        score: 0,
+        stats: {},
+        type: type
+      });
+    }
+    if (type === 'Ring' && equipments.length === 1) {
+      equipments.push({
+        enabled: true,
+        level: '-',
+        name: 'Empty Ring',
+        score: 0,
+        stats: {},
+        type: type
+      });
+    }
     viableEquipments[type] = equipments;
   });
   return viableEquipments;
@@ -210,17 +262,30 @@ let calcCandidatesNumber = function(viableEquipments) {
     viableEquipments['Second Hand'].length;
 };
 
+let calcStatsByEquipmentSet = function(equipmentSet) {
+  return _.reduce(equipmentSet, (result, value) => {
+    _.each(value.stats, (stat, key) => {
+      if (_.has(result, key)) {
+        result[key] += parseInt(stat);
+      } else {
+        result[key] = parseInt(stat);
+      }
+    });
+    return result;
+  }, {});
+};
+
 let search = function(query, worker) {
   setEquipments(query.equipments);
   setEquipmentTypes(query.equipmentTypes);
   setStatValues(query.statValues);
   setResistanceDeduction(query.resistanceDeduction);
+  setSearchTarget(query.searchTarget);
 
-  let viableEquipments = makeViableEquipments(query.viableMargin, query.blackList);
+  let viableEquipments = makeViableEquipments(query.viableMargin, query.relicBonus, query.epicBonus);
   let candidatesNumber = calcCandidatesNumber(viableEquipments);
   worker.postMessage(['candidatesNumber', candidatesNumber]);
 
-  let maxLoopCount = parseInt(query.maxLoopCount);
   let equipmentSetGenerator = cartesian(
     viableEquipments['Helmet'],
     viableEquipments['Cloak'],
@@ -235,22 +300,27 @@ let search = function(query, worker) {
     viableEquipments['Second Hand']
   );
   let ranking = [];
+  let score = 0;
   let scoreThreshold = 0;
   let count = 0;
-  const queueLength = 3;
+  const queueLength = 1;
   for (let equipmentSet of equipmentSetGenerator) {
     count += 1;
-    if (count > maxLoopCount) {
-      break;
-    }
     if (count%20000 === 0) {
-      worker.postMessage(['searchedNumber', count]);
+      worker.postMessage(['searchInfo', {
+        count: count,
+        t: '-1',
+        score: score,
+        maxScore: scoreThreshold
+      }]);
     }
-    let result = evalEquipmentSet(equipmentSet);
+    let result = evalEquipmentSet(_.clone(equipmentSet));
+    score = result.score;
     if (ranking.length < queueLength || result.score > scoreThreshold) {
       ranking.push({
         score: result.score,
         set: equipmentSet,
+        stats: calcStatsByEquipmentSet(equipmentSet),
         bestResistance: result.bestResistance,
         bestModifiableResistance: result.bestModifiableResistance,
         minimumResistance: result.minimumResistance
@@ -269,7 +339,110 @@ let search = function(query, worker) {
   };
 };
 
+let annealingProb = (score, nextScore, t) => {
+  if (nextScore >= score) {
+    return 1;
+  } else {
+    return Math.exp((nextScore - score)/t);
+  }
+};
+
+let annealing = function(query, worker) {
+  setEquipments(query.equipments);
+  setEquipmentTypes(query.equipmentTypes);
+  setStatValues(query.statValues);
+  setResistanceDeduction(query.resistanceDeduction);
+  setSearchTarget(query.searchTarget);
+
+  const MAX_ITER = parseInt(query.annealingMaxIteration);
+  const ALPHA = parseFloat(query.annealingCoolingAlpha);
+  let viableEquipments = makeViableEquipments(query.annealingViableMargin, query.relicBonus, query.epicBonus);
+  worker.postMessage(['candidatesNumber', MAX_ITER]);
+
+  let viableEquipmentArray = [
+    viableEquipments['Helmet'],
+    viableEquipments['Cloak'],
+    viableEquipments['Amulet'],
+    viableEquipments['Epaulettes'],
+    viableEquipments['Breastplate'],
+    viableEquipments['Belt'],
+    viableEquipments['Boots'],
+    viableEquipments['Ring'],
+    viableEquipments['Ring'],
+    viableEquipments['One-Handed Weapons'].concat(viableEquipments['Two-Handed Weapons']),
+    viableEquipments['Second Hand']
+  ];
+  let equipmentSet = _.map(viableEquipments, (equipments) => {
+    return equipments[_.random(equipments.length - 1)];
+  });
+  let ranking = [];
+  let scoreThreshold = 0;
+  let score = 0;
+  let count = 0;
+  let t = ALPHA;
+  const queueLength = 1;
+  for (count ; count<MAX_ITER ; count++) {
+    // make neighbor
+    let neighbor = _.clone(equipmentSet);
+    let evaluatedNeighbor;
+    for (count ; count<MAX_ITER ; count++) {
+      if (count%20000 === 0) {
+        worker.postMessage(['searchInfo', {
+          count: count,
+          t: t,
+          score: score,
+          maxScore: scoreThreshold
+        }]);
+      }
+
+      let nextEquipmentType = _.random(viableEquipmentArray.length - 1);
+      let nextEquipments = viableEquipmentArray[nextEquipmentType];
+      neighbor[nextEquipmentType] = nextEquipments[_.random(nextEquipments.length - 1)];
+      evaluatedNeighbor = evalEquipmentSet(_.clone(neighbor));
+
+      // skip invalid equipment set
+      if (evaluatedNeighbor.score !== 0) {
+        break;
+      }
+    }
+
+    // register ranking
+    if (ranking.length < queueLength || evaluatedNeighbor.score > scoreThreshold) {
+      ranking.push({
+        score: evaluatedNeighbor.score,
+        set: neighbor,
+        stats: calcStatsByEquipmentSet(neighbor),
+        bestResistance: evaluatedNeighbor.bestResistance,
+        bestModifiableResistance: evaluatedNeighbor.bestModifiableResistance,
+        minimumResistance: evaluatedNeighbor.minimumResistance
+      });
+      ranking = _.sortBy(ranking, ['score']);
+      if (ranking.length > queueLength) {
+        ranking.shift();
+      }
+      scoreThreshold = ranking[0].score;
+    }
+
+    // adopt neighbor
+    t = 150*Math.pow(ALPHA, 1000*count/MAX_ITER);
+    if (_.random(1, true) <= annealingProb(score, evaluatedNeighbor.score, t)) {
+      equipmentSet = neighbor;
+      score = evaluatedNeighbor.score;
+    }
+  }
+  return {
+    viableEquipments: viableEquipments,
+    ranking: _.reverse(ranking),
+    count: count
+  };
+};
+
 self.addEventListener('message', (message) => {
-  let result = search(message.data, self);
-  self.postMessage(['result', result]);
+  if (message.data.type === 'FULL') {
+    let result = search(message.data, self);
+    self.postMessage(['result', result]);
+  } else if (message.data.type === 'SA') {
+    let result = annealing(message.data, self);
+    self.postMessage(['result', result]);
+  }
 });

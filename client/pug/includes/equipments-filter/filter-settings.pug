@@ -1,0 +1,25 @@
+.row.wrap(style="margin-left: 16px;")
+  .widget
+    span.label Name
+    input.width-input(ng-model="ctrl.vars.selectCondition.name")
+  .widget
+    span.label Level
+    span {{ ctrl.vars.selectCondition.minLevel }}
+    input.width-input(type="range", ng-model="ctrl.vars.selectCondition.minLevel", min="0", max="200")
+    span {{ ctrl.vars.selectCondition.maxLevel }}
+    input.width-input(type="range", ng-model="ctrl.vars.selectCondition.maxLevel", min="0", max="200")
+  .widget
+    span.label Type
+    span(ng-repeat="type in ctrl.consts.equipmentTypes")
+      input(type="checkbox", ng-model="ctrl.vars.selectCondition.types[type]")
+      | {{ type }}
+  .widget
+    span.label Rarity
+    span(ng-repeat="rarity in ctrl.consts.rarities")
+      input(type="checkbox", ng-model="ctrl.vars.selectCondition.rarities[rarity]")
+      | {{ rarity }}
+  .widget
+    span.label Set
+    span(ng-repeat="setName in ctrl.consts.equipmentSetNames")
+      input(type="checkbox", ng-model="ctrl.vars.selectCondition.equipmentSetNames[setName]")
+      | {{ setName }}

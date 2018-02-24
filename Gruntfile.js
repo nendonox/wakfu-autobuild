@@ -19,7 +19,7 @@ module.exports = function(grunt) {
         dest: 'dest/build/workers/searcher.js'
       }
     },
-    jade: {
+    pug: {
       options: {
         pretty: true
       },
@@ -53,7 +53,7 @@ module.exports = function(grunt) {
     },
     watch: {
       default: {
-        tasks: ['eslint', 'jade', 'less', 'copy', 'concat'],
+        tasks: ['eslint', 'pug', 'less', 'copy', 'concat'],
         files: ['client/**/*']
       }
     }
@@ -61,9 +61,9 @@ module.exports = function(grunt) {
 
   grunt.loadNpmTasks('grunt-eslint');
   grunt.loadNpmTasks('grunt-contrib-concat');
-  grunt.loadNpmTasks('grunt-contrib-jade');
+  grunt.loadNpmTasks('grunt-contrib-pug');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.registerTask('build', ['eslint', 'jade', 'less', 'copy', 'concat']);
+  grunt.registerTask('build', ['eslint', 'pug', 'less', 'copy', 'concat']);
 };

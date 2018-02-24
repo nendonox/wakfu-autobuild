@@ -1,0 +1,45 @@
+div(ng-repeat="result in ctrl.vars.getResult().ranking", style="margin: 0 16px 16px;")
+  div(ng-show="result.score === 0") 条件を満たす装備セットが見つかりませんでした。制約条件を見直してください。
+  div(style="margin: 0 0 16px;", ng-show="result.score > 0")
+    span 解として得られた装備セットです。よさそうであればビルダーに入力して確かめてみてください。
+  .row.wrap(ng-show="result.score > 0")
+    .table(style="margin: 0 8px 8px 0; width: 850px;")
+      .row.table-header
+        span.results-row-name Name
+        span.results-row-level Level
+        span.results-row-type Type
+        span.results-row-stats Stats
+        span.results-row-score Score
+      .row.table-data(ng-repeat="equipment in result.set")
+        span.results-row-name
+          span(ng-class="ctrl.handlers.getRarityClass(equipment.rarity)", style="margin-right: 4px;") ◆
+          a(href="{{ 'https://www.wakfu.com' + equipment.url }}", target="_blank") {{ equipment.name }}
+        span.results-row-level
+          span {{ equipment.level }}
+        span.results-row-type
+          span {{ equipment.type }}
+        span.results-row-stats
+          stats-directive(stats="equipment.stats", ng-show="ctrl.vars.resultStatShowFlags[$index]")
+          button(ng-click="ctrl.handlers.toggleResultShowFlag($index)") Show
+          // stats-directive(stats="equipment.stats")
+        span.results-row-score {{ equipment.score | number: 0 }} P
+    div(style="width: 340px;")
+      div.total-stats(style="margin: 0 8px 8px 0;")
+        div.total-stats-header Total Stats (Score: {{ result.score | number: 0 }} P)
+        div(style="overflow-y: auto; height: 300px; margin: 4px 0;")
+          stats-directive(stats="result.stats")
+      .table(style="margin: 0 8px 8px 0;")
+        .row.table-header(style="height: 32px;")
+          span Resistance (Min {{ result.minimumResistance }})
+        .row.table-data(style="min-height: 32px;")
+          span(style="width: 27%;") Total
+          span(style="width: 18%;") F{{ result.bestResistance.fire }}
+          span(style="width: 18%;") E{{ result.bestResistance.earth }}
+          span(style="width: 18%;") A{{ result.bestResistance.air }}
+          span(style="width: 18%;") W{{ result.bestResistance.water }}
+        .row.table-data(ng-repeat="resistance in result.bestModifiableResistance", style="min-height: 24px;")
+          span(style="width: 27%;") Mod {{ $index +1 }}
+          span(style="width: 18%;") F{{ resistance.fire }}
+          span(style="width: 18%;") E{{ resistance.earth }}
+          span(style="width: 18%;") A{{ resistance.air }}
+          span(style="width: 18%;") W{{ resistance.water }}

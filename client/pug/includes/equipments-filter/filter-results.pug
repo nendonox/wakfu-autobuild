@@ -1,0 +1,33 @@
+.equipment-select
+  .equipment-select-table
+    .row.equipment-select-header
+      span.equipment-select-row-name Name
+      span.equipment-select-row-level Level
+      span.equipment-select-row-rarity Rarity
+      span.equipment-select-row-type Type
+      span.equipment-select-row-stats Stats
+      span.equipment-select-row-use Enabled
+        span.help(title="無効にすると装備セットを探索する際の候補から外れます。入手不可な装備やレベルが足りていない装備などは無効にしてください。") ?
+
+    .equipment-select-data-wrapper
+      .row.equipment-select-data(ng-repeat="equipment in ctrl.vars.getFilteredEquipments()", ng-click="ctrl.handlers.showEquipmentDetail(equipment)")
+        span.equipment-select-row-name
+          span(ng-class="ctrl.handlers.getRarityClass(equipment.rarity)", style="margin-right: 4px;") ◆
+          a(href="{{ 'https://www.wakfu.com' + equipment.url }}", target="_blank") {{ equipment.name }}
+        span.equipment-select-row-level
+          span {{ equipment.level }}
+        span.equipment-select-row-rarity
+          span {{ equipment.rarity }}
+        span.equipment-select-row-type
+          span {{ equipment.type }}
+        span.equipment-select-row-stats
+          stats-directive(stats="equipment.stats")
+        span.equipment-select-row-use
+          input(type="checkbox", ng-model="equipment.enabled")
+
+  .row(style="margin: 8px 0; justify-content: flex-end; align-items: center;")
+    span(style="margin-right: auto;")
+      span 検索結果: {{ ctrl.vars.filteredEquipmentsLengthCache }}件
+      span(ng-show="ctrl.vars.filteredEquipmentsLengthCache > 50") （50件目以降の検索結果は省略されています。）
+    button(ng-click="ctrl.handlers.enableSelectedFlags()", style="margin-right: 4px;") 検索結果をすべて有効化
+    button(ng-click="ctrl.handlers.disableSelectedFlags()") すべて無効化

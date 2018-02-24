@@ -1,0 +1,12 @@
+div(style="margin: 0 16px 16px;")
+  span 下記の装備を有用だと判断しました。この候補内で組み合わせることで計算量を抑えつつ近似解を得ます。
+.row.wrap(style="margin: 0 16px 16px;")
+  .table(ng-repeat="type in ctrl.consts.equipmentTypes", style="width: 290px; margin: 0 8px 8px 0;")
+    .row.table-header(style="min-height: 26px;")
+      span.table-settings-scores-stat {{ type }}
+    div(style="max-height: 140px; overflow-y: auto;")
+      .row.table-data(ng-repeat="equipment in ctrl.vars.getResult().viableEquipments[type]", style="min-height: 20px;")
+        span(ng-class="ctrl.handlers.getRarityClass(equipment.rarity)", style="margin-right: 4px;") ◆
+        span(style="width: 76%;")
+          a(href="{{ 'https://www.wakfu.com' + equipment.url }}", target="_blank") {{ equipment.name }}
+        span(style="width: 20%;") {{ equipment.score | number: 0 }} P
