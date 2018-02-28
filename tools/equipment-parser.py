@@ -54,7 +54,7 @@ def parseEquipments(html):
             value = splits[0]
             key = ' '.join(splits[1:])
             key = key.replace('  ', ' ')
-            stats[key] = value
+            stats[key] = value.replace(',', '')
         if COMPLETIONS.has_key(name):
             for k, v in COMPLETIONS[name].items():
                 stats[k] = v
