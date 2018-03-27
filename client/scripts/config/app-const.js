@@ -140,7 +140,7 @@ app.constant('AppConst', {
         '"Resistance Water":1,"Resistance Air":1,"Resistance Earth":1,"Critical Resistance":"0.25",' +
         '"Rear Resistance":"0.25","Dodge":0,"Lock":0,"Initiative":0,"Wisdom":0,"Prospecting":10}'),
       searchTarget: JSON.parse('{"minAp":13,"maxAp":13,"minMp":5,"maxMp":7,"minRange":3,' +
-        '"maxRange":3,"minWp":6,"maxWp":15,"minBlock":20,"maxBlock":100}')
+        '"maxRange":3,"minWp":6,"maxWp":15,"minCtrl":0,"maxCtrl":15,"minBlock":20,"maxBlock":100}')
     },
     {
       name: 'Xelor 13AP 5MP NonCrit',
@@ -154,7 +154,7 @@ app.constant('AppConst', {
         '"Resistance Water":1,"Resistance Air":1,"Resistance Earth":1,"Critical Resistance":"0.25",' +
         '"Rear Resistance":"0.25","Dodge":0,"Lock":0,"Initiative":0,"Wisdom":0,"Prospecting":10}'),
       searchTarget: JSON.parse('{"minAp":13,"maxAp":13,"minMp":5,"maxMp":7,"' +
-        'minRange":0,"maxRange":3,"minWp":6,"maxWp":15,"minBlock":0,"maxBlock":100}')
+        'minRange":0,"maxRange":3,"minWp":6,"maxWp":15,"minCtrl":0,"maxCtrl":15,"minBlock":0,"maxBlock":100}')
     },
     {
       name: 'Feca 12AP 6MP NonCrit Melee',
@@ -168,7 +168,7 @@ app.constant('AppConst', {
         '"Resistance Earth":1,"Critical Resistance":"0.25","Rear Resistance":"0.25","Dodge":0,' +
         '"Lock":"0.5","Initiative":0,"Wisdom":0,"Prospecting":10}'),
       searchTarget: JSON.parse('{"minAp":12,"maxAp":12,"minMp":6,"maxMp":6,"minRange":0,' +
-        '"maxRange":10,"minWp":6,"maxWp":15,"minBlock":0,"maxBlock":50}')
+        '"maxRange":10,"minWp":6,"maxWp":15,"minCtrl":0,"maxCtrl":15,"minBlock":0,"maxBlock":50}')
     },
     {
       name: 'Steamer 12AP 6MP LD-Single',
@@ -182,7 +182,7 @@ app.constant('AppConst', {
         '"Resistance Earth":1,"Critical Resistance":"0.25","Rear Resistance":"0.25",' +
         '"Dodge":0,"Lock":0,"Initiative":0,"Wisdom":0,"Prospecting":10}'),
       searchTarget: JSON.parse('{"minAp":12,"maxAp":12,"minMp":6,"maxMp":6,"minRange":3,' +
-        '"maxRange":3,"minWp":0,"maxWp":15,"minBlock":20,"maxBlock":100}')
+        '"maxRange":3,"minWp":0,"maxWp":15,"minCtrl":0,"maxCtrl":15,"minBlock":20,"maxBlock":100}')
     }
   ]
 });

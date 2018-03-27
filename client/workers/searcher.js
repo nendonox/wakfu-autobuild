@@ -110,13 +110,21 @@ let evalEquipmentSet = function(equipmentSet) {
   let score = 0;
   let relic = 0;
   let epic = 0;
-  let ap = 7, mp = 4, wp = 6, range = 0, block = 0;
+  let ap = 7, mp = 4, wp = 6, range = 0, block = 0, control = 0;
   let resistance = makeResistance(0, 0, 0, 0);
   let modifiableResistances = [];
 
   // 両手持ちの場合はサブ武器を外す
   if (equipmentSet[9].type === 'Two-Handed Weapons') {
     equipmentSet.pop();
+    equipmentSet.push({
+      enabled: true,
+      level: '-',
+      name: 'Empty',
+      score: 0,
+      stats: {},
+      type: 'Second Hand'
+    });
   }
 
   _.each(equipmentSet, function(equipment) {
@@ -133,6 +141,7 @@ let evalEquipmentSet = function(equipmentSet) {
     wp += equipment.stats['WP'] ? parseInt(equipment.stats['WP']) : 0;
     range += equipment.stats['Range'] ? parseInt(equipment.stats['Range']) : 0;
     block += equipment.stats['Block'] ? parseInt(equipment.stats['Block']) : 0;
+    control  += equipment.stats['Control'] ? parseInt(equipment.stats['Control']) : 0;
 
     // 耐性（固定）
     let resistanceFire = parseInt(equipment.stats['Resistance Fire']) || 0;
@@ -161,9 +170,11 @@ let evalEquipmentSet = function(equipmentSet) {
   if (wp < vars.searchTarget.minWp || vars.searchTarget.maxWp < wp) { return { score: 0 }; }
   if (range < vars.searchTarget.minRange || vars.searchTarget.maxRange < range) { return { score: 0 }; }
   if (block < vars.searchTarget.minBlock || vars.searchTarget.maxBlock < block) { return { score: 0 }; }
+  if (control < vars.searchTarget.minCtrl || vars.searchTarget.maxCtrl < control) { return { score: 0 }; }
   let result = searchBestResistance(resistance, modifiableResistances);
   return {
     score: score - calcResistanceDeduction(result.bestResistance),
+    set: equipmentSet,
     bestResistance: result.bestResistance,
     bestModifiableResistance: result.bestModifiableResistance,
     minimumResistance: result.minimumResistance
@@ -319,8 +330,8 @@ let search = function(query, worker) {
     if (ranking.length < queueLength || result.score > scoreThreshold) {
       ranking.push({
         score: result.score,
-        set: equipmentSet,
-        stats: calcStatsByEquipmentSet(equipmentSet),
+        set: result.set,
+        stats: calcStatsByEquipmentSet(result.set),
         bestResistance: result.bestResistance,
         bestModifiableResistance: result.bestModifiableResistance,
         minimumResistance: result.minimumResistance
@@ -410,8 +421,8 @@ let annealing = function(query, worker) {
     if (ranking.length < queueLength || evaluatedNeighbor.score > scoreThreshold) {
       ranking.push({
         score: evaluatedNeighbor.score,
-        set: neighbor,
-        stats: calcStatsByEquipmentSet(neighbor),
+        set: evaluatedNeighbor.set,
+        stats: calcStatsByEquipmentSet(evaluatedNeighbor.set),
         bestResistance: evaluatedNeighbor.bestResistance,
         bestModifiableResistance: evaluatedNeighbor.bestModifiableResistance,
         minimumResistance: evaluatedNeighbor.minimumResistance

@@ -13,13 +13,12 @@ IGNORES = [
 COMPLETIONS = {
     'Forgotten Cloak': {
         '90% Vivacity': '80'
-    },
-    'Disembodier': {
-        'MP': -1
-    },
-    'Legano': {
-        'WP': -2
     }
+}
+
+ALIASES = {
+    'max MP': 'MP',
+    'max WP': 'WP'
 }
 
 import lxml.html
@@ -58,6 +57,9 @@ def parseEquipments(html):
         if COMPLETIONS.has_key(name):
             for k, v in COMPLETIONS[name].items():
                 stats[k] = v
+        for key in ALIASES.keys():
+            if stats.has_key(key):
+                stats[ALIASES[key]] = stats[key]
         if not equipments.has_key(_type):
             equipments[_type] = [];
         equipments[_type].append({

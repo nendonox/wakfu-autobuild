@@ -44,6 +44,16 @@ div
       span.table-settings-target-slider
         input(type="range", ng-model="ctrl.vars.searchTarget.maxWp", min="0", max="15")
     .row.table-data
+      span.table-settings-target-target Min Control
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.minCtrl }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.minCtrl", min="0", max="15")
+    .row.table-data
+      span.table-settings-target-target Max Control
+      span.table-settings-target-value {{ ctrl.vars.searchTarget.maxCtrl }}
+      span.table-settings-target-slider
+        input(type="range", ng-model="ctrl.vars.searchTarget.maxCtrl", min="0", max="15")
+    .row.table-data
       span.table-settings-target-target Min Block
       span.table-settings-target-value {{ ctrl.vars.searchTarget.minBlock }}
       span.table-settings-target-slider

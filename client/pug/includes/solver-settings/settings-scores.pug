@@ -3,7 +3,7 @@ div
     .row.table-header
       span.table-settings-scores-stat Stats Scores
         span.help(title="設定したスコアに応じて装備の評価値を算出します。評価の高い装備は優先的に選ばれます。") ?
-    div(style="height: 420px; overflow-y: auto;")
+    div(style="height: 500px; overflow-y: auto;")
       .row.table-data(ng-repeat="label in ctrl.consts.statLabels")
         span.table-settings-scores-stat {{ label }}
         span.table-settings-scores-score
